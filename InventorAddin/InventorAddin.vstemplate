@@ -1,0 +1,32 @@
+<VSTemplate Version="3.0.0" Type="Project" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name>InventorAddinTemplate</Name>
+    <Description>Template for Inventor Add-In</Description>
+    <ProjectType>VisualBasic</ProjectType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>InventorAddin</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+	 <Icon>__TemplateIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+ 
+	<Project TargetFileName="$projectname$.vbproj" File="InventorAddin.vbproj" ReplaceParameters="true">
+		<ProjectItem ReplaceParameters="true" TargetFileName="$projectname$AddInServer.vb">InventorAddinAddInServer.vb</ProjectItem>
+		<ProjectItem ReplaceParameters="true">RibbonButtonManager.vb</ProjectItem>
+      <ProjectItem ReplaceParameters="true">AssemblyInfo.vb</ProjectItem>
+		<ProjectItem ReplaceParameters="true" TargetFileName="Autodesk.$projectname$.Inventor.addin">Autodesk.InventorAddin.Inventor.addin</ProjectItem>
+	    <ProjectItem ReplaceParameters="true">ButtonCfg.json</ProjectItem>
+      <ProjectItem ReplaceParameters="true">Resources.resx</ProjectItem>
+      <!-- Ensure Resources folder and images are copied into instantiated project -->
+      <ProjectItem ReplaceParameters="false">Resources\Button1_16x16.png</ProjectItem>
+      <ProjectItem ReplaceParameters="false">Resources\Button1_32x32.png</ProjectItem>
+      <ProjectItem ReplaceParameters="false">Resources\Button2_16x16.png</ProjectItem>
+      <ProjectItem ReplaceParameters="false">Resources\Button2_32x32.png</ProjectItem>
+      <ProjectItem ReplaceParameters="true">Ribbons.txt</ProjectItem>
+		<ProjectItem ReplaceParameters="true" TargetFileName="$projectname$.X.manifest">InventorAddin.X.manifest</ProjectItem>
+		
+    </Project>
+  </TemplateContent>
+</VSTemplate>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+
+  <assemblyIdentity name="$projectname$" version="1.0.0.0"></assemblyIdentity>
+
+  <clrClass clsid="{90026ee2-08d3-46e1-bdae-3e48e2ddea9c}" progid="$projectname$AddInServer" threadingModel="Both" name="$projectname$.$projectname$AddInServer" runtimeVersion=""></clrClass>
+
+  <file name="$projectname$.dll" hashalg="SHA1"></file>
+
+</assembly>

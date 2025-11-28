@@ -1,0 +1,38 @@
+[
+  {
+    "RibbonName": "Part",
+    "TabId": "id_TabModel,id_TabSheetMetal,id_TabFlatPattern",
+    "DisplayName": "ThePart",
+    "InternalId": "Button_ThePart",
+    "Tooltip": "",
+    "SmallImage": "Button1_16x16",
+    "LargeImage": "Button1_32x32",
+    "PanelId": "ThePanel",
+    "PanelName": "ThePanel",
+    "Handler": "ShowDisplay"
+  },
+  {
+    "RibbonName": "Assembly",
+    "TabId": "id_TabAssemble,id_TabModel",
+    "DisplayName": "TheAss",
+    "InternalId": "Button_TheAss",
+    "Tooltip": "",
+    "SmallImage": "Button2_16x16",
+    "LargeImage": "Button2_32x32",
+    "PanelId": "ThePanel",
+    "PanelName": "ThePanel",
+    "Handler": "ShowInternal"
+  },
+  {
+    "RibbonName": "Drawing",
+    "TabId": "id_TabPlaceViews,id_TabAnnotate",
+    "DisplayName": "TheDrw",
+    "InternalId": "Button_TheDrw",
+    "Tooltip": "",
+    "SmallImage": "Button1_16x16",
+    "LargeImage": "Button1_32x32",
+    "PanelId": "ThePanel",
+    "PanelName": "ThePanel",
+    "Handler": "ShowDisplay"
+  }
+]

@@ -1,0 +1,118 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>Library</OutputType>
+    <StartupObject></StartupObject>
+    <MyType>Windows</MyType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <Title>$projectname$</Title>
+    <Description>$projectname$</Description>
+    <Company>Jodant</Company>
+    <Product>None</Product>
+    <Copyright>Copyright ©2025 Jodant.</Copyright>
+    <EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DocumentationFile>.xml</DocumentationFile>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DocumentationFile>.xml</DocumentationFile>
+    <DefineDebug>false</DefineDebug>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>none</DebugType>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Update="System">
+      <Name>System</Name>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Resources.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <!-- This file is provided in the template as 2026TestAddInServer.vb and will be renamed to $projectname$AddInServer.vb on project creation -->
+    <Compile Include="$projectname$AddInServer.vb" />
+    <Compile Include="AssemblyInfo.vb" />
+    <Compile Include="RibbonButtonManager.vb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="My Project\Application.myapp" />
+    <None Include="My Project\Settings.settings">
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <!-- Manifest and addin filenames are parameterized in the template -->
+    <None Include="$projectname$.X.manifest">
+      <Visible>true</Visible>
+    </None>
+    <None Include="Autodesk.$(TargetName).Inventor.addin">
+      <Visible>true</Visible>
+    </None>
+    <None Include="ButtonCfg.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="Resources\Button1_16x16.png" />
+    <EmbeddedResource Include="Resources\Button1_32x32.png" />
+    <EmbeddedResource Include="Resources\Button2_16x16.png" />
+    <EmbeddedResource Include="Resources\Button2_32x32.png" />
+    <Content Include="Ribbons.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Autodesk.Inventor.Interop">
+      <HintPath Condition="Exists('$(programfiles)\Autodesk\Inventor 2026\Bin')">$(programfiles)\Autodesk\Inventor 2026\Bin\Autodesk.Inventor.Interop.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <PropertyGroup />
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="mt.exe -manifest &quot;$(ProjectDir)$projectname$.X.manifest&quot; -outputresource:&quot;$(TargetPath)&quot;;#2" ContinueOnError="true" />
+    <Exec Command="XCopy &quot;$(ProjectDir)Autodesk.$projectname$.Inventor.addin&quot; &quot;$(TargetDir)&quot; /y" ContinueOnError="true" />
+    <Exec Command="DEL &quot;$(TargetDir)$(TargetName).pdb&quot;" ContinueOnError="true" />
+    <Exec Command="rmdir /q /s &quot;C:\ProgramData\Autodesk\Inventor Addins\$(TargetName)&quot;" ContinueOnError="true" />
+    <Exec Command="XCopy &quot;$(TargetDir)*&quot; &quot;%appdata%\Autodesk\ApplicationPlugins\$(TargetName)\&quot; /y /r /i /s /f" ContinueOnError="true" />
+  </Target>
+</Project>
