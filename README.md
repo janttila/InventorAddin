@@ -1,4 +1,4 @@
-Inventor addin template from Inventor version 2025 and newer.
+Inventor addin template for Inventor version 2025 and newer.
 For vb.net
 
 Put the .zip in Visual studios ProjectTemplates folder.
