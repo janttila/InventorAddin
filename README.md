@@ -1,6 +1,9 @@
 Easy Inventor addin template for Inventor version 2025 and newer.
 For vb.net
 
+All ribbon buttons are stored in an json file.
+There is an editor to make the necessary code here ->> https://nexamon.com/editor.html
+
 Put the .zip from the Package folder in Visual studios ProjectTemplates folder.
 
 In the create a new project, Search for InventorAddinTemplate.
