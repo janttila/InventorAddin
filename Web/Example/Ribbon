@@ -1,0 +1,137 @@
+﻿Start 
+	 Get Started - ZeroDoc
+	 Tools - id_TabTools
+	 Vault - id_TabVault
+	 Vault - id_TabVault_Upgrade
+	 Add-Ins - id_AddInsTab
+	 Inventor Debug - id_InventorDebugTab
+ 
+Part
+	 Sheet Metal - id_TabSheetMetal
+	 Flat Pattern - id_TabFlatPattern
+	 Model - id_TabModel
+	 Inspect - id_TabInspect
+	 Tools - id_TabTools
+	 Manage - id_TabManage
+	 View - id_TabView
+	 Environments - id_TabEnvironments
+	 Vault - id_TabVault
+	 Vault - id_TabVault_Upgrade
+	 Get Started - id_GetStarted
+	 Add-Ins - id_AddInsTab
+	 Sketch - id_TabSketch
+	 Exit 2D Sketch - id_TabSketch_Exit
+	 3D Sketch - id_Tab3DSketch
+	 Exit 3D Sketch - id_Tab3DSketch_Exit
+	 Construction - id_TabConstruction
+	 Exit Construction - id_TabConstruction_Exit
+	 Edit Base Solid - id_TabEditBaseSolid
+	 Exit Base Solid - id_TabEditBaseSolid_Exit
+	 Repair - id_TabSurfaceRepair
+	 Exit Repair - id_TabSurfaceRepair_Exit
+	 Route - id_TabRoute
+	 Exit Route - id_TabRoute_Exit
+	 Render - id_TabRender
+	 Exit Studio - id_TabRender_Exit
+	 Exit Stress Analysis - id_TabStressAnalysis_Exit
+	 Stress Analysis - id_TabAFEA
+	 Exit Stress Analysis - id_TabAFEA_Exit
+	 BIM Exchange - id_TabAECExchange
+	 Exit BIM Exchange - id_TabAECExchange_Exit
+	 Return - id_TabReturn
+	 Inventor Debug - id_InventorDebugTab
+	 Fusion Change Manager - FTC.Tab
+ 
+Assembly
+	 Mold Layout - MoldTabLayout
+	 Core/Cavity - MoldTabCoreCavity
+	 Mold Assembly - MoldTabMoldBase
+	 Assemble - id_TabAssemble
+	 Design - id_TabDesign
+	 Model - id_TabModel
+	 Weld - id_TabWeld
+	 Weld Return to Parent - id_TabWeld_ReturnParent
+	 Inspect - id_TabInspect
+	 Tools - id_TabTools
+	 Manage - id_TabManage
+	 View - id_TabView
+	 Environments - id_TabEnvironments
+	 Vault - id_TabVault
+	 Vault - id_TabVault_Upgrade
+	 Get Started - id_GetStarted
+	 Add-Ins - id_AddInsTab
+	 Sketch - id_TabSketch
+	 Exit 2D Sketch - id_TabSketch_Exit
+	 Tube and Pipe - id_TabTube_Pipe
+	 Exit Tube and Pipe - id_TabTube_Pipe_Exit
+	 Pipe Run - id_TabTube_Pipe_Run
+	 Exit Tube and Pipe Run - id_TabTube_Pipe_Run_Exit
+	 Cable and Harness - id_TabCable_Harness
+	 Exit Cable and Harness - id_TabCable_Harness_Exit
+	 Render - id_TabRender
+	 Exit Studio - id_TabRender_Exit
+	 Dynamic Simulation - id_TabSimulation
+	 Exit Dynamic Simulation - id_TabSimulation_Exit
+	 BIM Exchange - id_TabAECExchange
+	 Exit BIM Exchange - id_TabAECExchange_Exit
+	 Return - id_TabReturn
+	 Stress Analysis - id_TabAFEA
+	 Exit Stress Analysis - id_TabAFEA_Exit
+	 Frame Analysis - id_TabIFA
+	 Exit Frame Analysis - id_TabIFA_Exit
+	 Inventor Debug - id_InventorDebugTab
+ 
+Drawing
+	 Place Views - id_TabPlaceViews
+	 Annotate - id_TabAnnotate
+	 Annotate (ESKD) - id_TabAnnotateESKD
+	 Tools - id_TabTools
+	 Manage - id_TabManage
+	 View - id_TabView
+	 Environments - id_TabEnvironments
+	 Nailboard - id_TabNailboard
+	 Vault - id_TabVault
+	 Vault - id_TabVault_Upgrade
+	 Get Started - id_GetStarted
+	 Add-Ins - id_AddInsTab
+	 Sketch - id_TabSketch
+	 Exit 2D Sketch - id_TabSketch_Exit
+	 Exit Nailboard Sketch - id_TabNailboard_Exit
+	 Review - id_TabReview
+	 Exit Review - id_TabNailboard_Review
+	 Return - id_TabReturn
+	 Inventor Debug - id_InventorDebugTab
+ 
+Presentation
+	Presentation - id_TabManage
+	Tools - id_TabTools
+	View - id_TabView
+	Environments - id_TabEnvironments
+	Vault - id_TabVault
+	Vault - id_TabVault_Upgrade
+	Get Started - id_GetStarted
+	Add-Ins - id_AddInsTab
+	Return - id_TabReturn
+	Inventor Debug - id_InventorDebugTab
+ 
+iFeatures
+	 iFeature - id_TabiFeature
+	 Tools - id_TabTools
+	 View - id_TabView
+	 Environments - id_TabEnvironments
+	 Vault - id_TabVault
+	 Vault - id_TabVault_Upgrade
+	 Get Started - id_GetStarted
+	 Add-Ins - id_AddInsTab
+	 Inventor Debug - id_InventorDebugTab
+ 
+UnknownDocument
+	 Custom View - id_TabCustomView
+	 Engineer's Notebook - id_TabEngineersNotebook
+	 Tools - id_TabEngineersNotebookTools
+	 View - id_TabEngineersNotebookView
+	 Vault - id_TabVault
+	 Vault - id_TabVault_Upgrade
+	 Get Started - id_GetStarted
+	 Inventor Debug - id_InventorDebugTab
+	 Add-Ins - id_AddInsTab

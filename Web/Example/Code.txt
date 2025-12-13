@@ -1,0 +1,27 @@
+'----------------------------------------------------------
+'******** Register built-in handler factories here ********
+
+handlerFactories.Add("ShowDisplay", AddressOf MakeShowDisplay)
+handlerFactories.Add("ShowInternal", AddressOf MakeShowInternal)
+
+'----------------------------------------------------------
+
+
+
+'-----------------------------------------------------------------------
+' ******* Handler factory helpers  *************************************
+
+Private Function MakeShowDisplay(cfg As ButtonConfig) As RibbonExecuteHandler
+	Return New RibbonExecuteHandler(Sub(ctx As NameValueMap)
+		MsgBox(cfg.DisplayName)
+	End Sub)
+End Function
+
+Private Function MakeShowInternal(cfg As ButtonConfig) As RibbonExecuteHandler
+	Return New RibbonExecuteHandler(Sub(ctx As NameValueMap)
+		MsgBox(cfg.DisplayName)
+	End Sub)
+End Function
+
+'-----------------------------------------------------------------------
+'-----------------------------------------------------------------------

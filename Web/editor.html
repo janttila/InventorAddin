@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Configuration Editor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/flatly/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, var(--bs-dark) 0%, var(--bs-body-bg) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        #alert-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            min-width: 400px;
+            max-width: 600px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .main-card {
+            background: var(--bs-body-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            margin-bottom: 20px;
+            border: 1px solid var(--bs-border-color);
+        }
+
+        h1 {
+            color: var(--bs-primary);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--bs-secondary);
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            color: var(--bs-body-color);
+            font-weight: 600;
+        }
+
+        .form-control,
+        .form-select {
+            background-color: var(--bs-secondary-bg);
+            border-color: var(--bs-border-color);
+            color: var(--bs-body-color);
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background-color: var(--bs-secondary-bg);
+            border-color: var(--bs-primary);
+            color: var(--bs-body-color);
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        .form-control::placeholder {
+            color: var(--bs-secondary-color);
+        }
+
+        .btn-add-tab {
+            background-color: var(--bs-success);
+            border-color: var(--bs-success);
+            white-space: nowrap;
+            color: white;
+        }
+
+        .btn-add-tab:hover {
+            background-color: var(--bs-success);
+            border-color: var(--bs-success);
+            opacity: 0.85;
+        }
+
+        .selected-tabs {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .badge-tab {
+            background-color: var(--bs-primary);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-tab .btn-close {
+            padding: 0;
+            width: 18px;
+            height: 18px;
+            opacity: 1;
+            filter: brightness(0) invert(1);
+            font-size: 10px;
+        }
+
+        .badge-tab .btn-close:hover {
+            opacity: 0.8;
+        }
+
+        .entries-section {
+            border-top: 2px solid var(--bs-border-color);
+            padding-top: 20px;
+            margin-top: 40px;
+        }
+
+        .entries-section h2 {
+            color: var(--bs-primary);
+            margin-bottom: 15px;
+        }
+
+        .entry-item {
+            background-color: var(--bs-secondary-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--bs-border-color);
+        }
+
+        .entry-info strong {
+            color: var(--bs-primary);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .entry-info span {
+            color: var(--bs-secondary-color);
+            font-size: 13px;
+        }
+
+        .entry-item img {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            border: 1px solid var(--bs-border-color);
+            border-radius: 4px;
+        }
+
+        .image-preview {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: var(--bs-secondary-bg);
+            border: 1px solid var(--bs-border-color);
+            border-radius: 6px;
+            display: none;
+        }
+
+        .image-preview.show {
+            display: block;
+        }
+
+        .image-preview img {
+            border: 1px solid var(--bs-border-color);
+            margin-right: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--bs-secondary-color);
+            padding: 40px;
+            font-style: italic;
+        }
+
+        #filePreview {
+            border-top: 2px solid var(--bs-border-color);
+            padding-top: 20px;
+            margin-top: 30px;
+        }
+
+        #filePreview h2 {
+            color: var(--bs-primary);
+        }
+
+        #filePreview textarea {
+            background-color: var(--bs-secondary-bg);
+            border-color: var(--bs-border-color);
+            color: var(--bs-body-color);
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-card">
+            <h1>Button Configuration Editor</h1>
+            <p class="subtitle">Create ButtonCfg.json and Code.txt files for Autodesk Inventor add-ins</p>
+
+            <div id="alert-container"></div>
+
+            <form id="buttonForm">
+                <div class="mb-3">
+                    <label for="ribbonName" class="form-label">Ribbon Name</label>
+                    <select id="ribbonName" class="form-select" required>
+                        <option value="">Select Ribbon...</option>
+                        <option value="Start">Start</option>
+                        <option value="Part">Part</option>
+                        <option value="Assembly">Assembly</option>
+                        <option value="Drawing">Drawing</option>
+                        <option value="Presentation">Presentation</option>
+                        <option value="iFeatures">iFeatures</option>
+                        <option value="UnknownDocument">UnknownDocument</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="tabId" class="form-label">Tab IDs</label>
+                    <div class="d-flex gap-2 mb-2">
+                        <select id="tabId" class="form-select">
+                            <option value="">Select Tab...</option>
+                        </select>
+                        <button type="button" class="btn btn-add-tab" onclick="addTabId()">Add Tab</button>
+                    </div>
+                    <div class="selected-tabs" id="selectedTabs"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="displayName" class="form-label">Button Display Name</label>
+                    <input type="text" id="displayName" class="form-control" placeholder="Enter display name..." required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="internalId" class="form-label">Button Internal ID</label>
+                    <input type="text" id="internalId" class="form-control" placeholder="Enter internal ID..." required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="tooltip" class="form-label">Button Tooltip</label>
+                    <input type="text" id="tooltip" class="form-control" placeholder="Enter tooltip (optional)">
+                </div>
+
+                <div class="mb-3">
+                    <label for="panelId" class="form-label">Panel ID</label>
+                    <input type="text" id="panelId" class="form-control" placeholder="Enter panel ID..." required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="panelName" class="form-label">Panel Name</label>
+                    <input type="text" id="panelName" class="form-control" placeholder="Enter panel name..." required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="smallImage" class="form-label">Small Image (16x16 PNG)</label>
+                    <input type="file" id="smallImage" class="form-control" accept=".png" onchange="validateImage('smallImage', 16, 16)">
+                    <div id="smallImagePreview" class="image-preview">
+                        <small class="text-muted">Preview:</small>
+                        <img id="smallImageImg" src="" alt="Small preview">
+                        <span id="smallImageName" class="text-muted"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="largeImage" class="form-label">Large Image (32x32 PNG)</label>
+                    <input type="file" id="largeImage" class="form-control" accept=".png" onchange="validateImage('largeImage', 32, 32)">
+                    <div id="largeImagePreview" class="image-preview">
+                        <small class="text-muted">Preview:</small>
+                        <img id="largeImageImg" src="" alt="Large preview">
+                        <span id="largeImageName" class="text-muted"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="handler" class="form-label">Handler</label>
+                    <input type="text" id="handler" class="form-control" placeholder="Enter handler name..." required>
+                </div>
+
+                <div class="d-flex gap-3 mt-4">
+                    <button type="submit" class="btn btn-primary flex-fill">Add Entry</button>
+                    <button type="button" class="btn btn-secondary flex-fill" onclick="clearForm()">Clear Form</button>
+                </div>
+            </form>
+
+            <div class="entries-section">
+                <h2>Entries (<span id="entryCount">0</span>)</h2>
+                <div id="entriesList" class="empty-state">
+                    No entries yet. Add your first button configuration above.
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 mt-4">
+                <button class="btn btn-primary flex-fill" onclick="generateFiles()">Download Files</button>
+                <button class="btn btn-primary flex-fill" onclick="showFilesOnPage()">Show on Page</button>
+                <button class="btn btn-secondary flex-fill" onclick="clearAllEntries()">Clear All</button>
+            </div>
+
+            <div id="filePreview" style="display: none;">
+                <h2 class="mb-3">Generated Files</h2>
+                
+                <div class="mb-3">
+                    <label for="buttonCfgPreview" class="form-label">ButtonCfg.json</label>
+                    <textarea id="buttonCfgPreview" class="form-control" readonly rows="10"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="codePreview" class="form-label">Code.txt</label>
+                    <textarea id="codePreview" class="form-control" readonly rows="10"></textarea>
+                </div>
+
+                <div class="d-flex gap-3">
+                    <button class="btn btn-primary flex-fill" onclick="copyToClipboard('buttonCfgPreview')">Copy ButtonCfg.json</button>
+                    <button class="btn btn-primary flex-fill" onclick="copyToClipboard('codePreview')">Copy Code.txt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="editor.js"></script>
+</body>
+</html>

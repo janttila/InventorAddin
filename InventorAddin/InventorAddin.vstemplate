@@ -18,6 +18,7 @@
       <ProjectItem ReplaceParameters="true">AssemblyInfo.vb</ProjectItem>
 		<ProjectItem ReplaceParameters="true" TargetFileName="Autodesk.$projectname$.Inventor.addin">Autodesk.InventorAddin.Inventor.addin</ProjectItem>
 	    <ProjectItem ReplaceParameters="true">ButtonCfg.json</ProjectItem>
+		<ProjectItem ReplaceParameters="true">DiagnosticsLogger.vb</ProjectItem>
       <ProjectItem ReplaceParameters="true">Resources.resx</ProjectItem>
       <!-- Ensure Resources folder and images are copied into instantiated project -->
       <ProjectItem ReplaceParameters="false">Resources\Button1_16x16.png</ProjectItem>

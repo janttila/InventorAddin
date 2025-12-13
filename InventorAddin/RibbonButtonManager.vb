@@ -5,7 +5,8 @@ Imports Inventor
 
 Namespace $projectname$
 
-   
+ 
+
     Public Delegate Sub RibbonExecuteHandler(Context As NameValueMap)
 
     ''' <summary>
@@ -31,6 +32,7 @@ Namespace $projectname$
         End Class
 
         Private ReadOnly _buttons As New List(Of ButtonEntry)()
+        Private ReadOnly _panelCache As New Global.System.Collections.Generic.Dictionary(Of String, RibbonPanel)()
 
         Public Sub New(app As Inventor.Application, addInClientIdFunc As Func(Of String))
             _app = app
@@ -62,6 +64,11 @@ Namespace $projectname$
         ''' </summary>
         Public Sub CreateDefinitions()
             For Each be In _buttons
+                Try
+                    DiagnosticsLogger.Log("CreateDefinitions: DisplayName='" & be.DisplayName & "' InternalId='" & be.InternalId & "' TabId='" & be.TabId & "'")
+                Catch
+                End Try
+
                 If be.ButtonDef Is Nothing Then
                     be.ButtonDef = CreateButtonDefinition(be.DisplayName, be.InternalId, be.Tooltip, CType(be.SmallImage, System.Drawing.Image), CType(be.LargeImage, System.Drawing.Image))
 
@@ -73,17 +80,25 @@ Namespace $projectname$
                                                                        Try
                                                                            Dim h = be.ExecuteHandler
                                                                            If h IsNot Nothing Then h.Invoke(Context)
-                                                                       Catch
+                                                                       Catch ex As Exception
+                                                                           DiagnosticsLogger.Log("OnExecute handler error for '" & be.DisplayName & "': " & ex.Message)
                                                                        End Try
                                                                    End Sub
                             Else
                                 AddHandler be.ButtonDef.OnExecute, Sub(Context As NameValueMap)
                                                                        Try
-                                                                           MsgBox(be.DisplayName)
-                                                                       Catch
+                                                                           ' default no-op
+                                                                       Catch ex As Exception
+                                                                           DiagnosticsLogger.Log("OnExecute default handler error for '" & be.DisplayName & "': " & ex.Message)
                                                                        End Try
                                                                    End Sub
                             End If
+                        Catch ex As Exception
+                            DiagnosticsLogger.Log("CreateDefinitions AddHandler error for '" & be.DisplayName & "': " & ex.Message)
+                        End Try
+                    Else
+                        Try
+                            DiagnosticsLogger.Log("CreateDefinitions: ButtonDefinition for '" & be.DisplayName & "' returned Nothing (possibly duplicate internal name)")
                         Catch
                         End Try
                     End If
@@ -99,25 +114,63 @@ Namespace $projectname$
 
             For Each be In _buttons
                 Try
+                    Try
+                        DiagnosticsLogger.Log("AddToUserInterface: Adding DisplayName='" & be.DisplayName & "' InternalId='" & be.InternalId & "' Ribbon='" & be.RibbonName & "' Tab='" & be.TabId & "' Panel='" & be.PanelId & "'")
+                    Catch
+                    End Try
+
                     Dim ribbon As Ribbon = _app.UserInterfaceManager.Ribbons.Item(be.RibbonName)
                     Dim tab As RibbonTab = ribbon.RibbonTabs.Item(be.TabId)
 
                     Dim panel As RibbonPanel = Nothing
-                    Try
-                        panel = tab.RibbonPanels.Item(be.PanelId)
-                    Catch ex As Exception
-                        ' Panel doesn't exist - create it
-                        panel = tab.RibbonPanels.Add(be.PanelId, be.PanelName, _addInClientIdFunc())
-                    End Try
+                    Dim cacheKey As String = be.RibbonName & "|" & be.TabId & "|" & be.PanelId
+                    If _panelCache.ContainsKey(cacheKey) Then
+                        panel = _panelCache(cacheKey)
+                    Else
+                        Try
+                            panel = tab.RibbonPanels.Item(be.PanelId)
+                            If panel IsNot Nothing Then
+                                _panelCache(cacheKey) = panel
+                            End If
+                        Catch ex As Exception
+                            ' Panel doesn't exist - create it
+                            Try
+                                panel = tab.RibbonPanels.Add(be.PanelId, be.PanelName, _addInClientIdFunc())
+                                If panel IsNot Nothing Then
+                                    _panelCache(cacheKey) = panel
+                                End If
+                            Catch ex2 As Exception
+                                DiagnosticsLogger.Log("Failed to create panel '" & be.PanelId & "' on tab '" & be.TabId & "': " & ex2.Message)
+                                ' Fallback: try swapped parameter order in case API expects (Name, InternalName, ClientId)
+                                Try
+                                    panel = tab.RibbonPanels.Add(be.PanelName, be.PanelId, _addInClientIdFunc())
+                                    If panel IsNot Nothing Then
+                                        _panelCache(cacheKey) = panel
+                                        DiagnosticsLogger.Log("Fallback create succeeded using swapped params for panel '" & be.PanelId & "' on tab '" & be.TabId & "'")
+                                    End If
+                                Catch exSwapped As Exception
+                                    DiagnosticsLogger.Log("Fallback create (swapped params) also failed for panel '" & be.PanelId & "' on tab '" & be.TabId & "': " & exSwapped.Message)
+                                End Try
+                            End Try
+                        End Try
+                    End If
 
                     If be.ButtonDef IsNot Nothing Then
                         Try
                             ' Add button to the panel. If the same control already exists this may throw - ignore duplicates.
-                            panel.CommandControls.AddButton(be.ButtonDef, True)
-                        Catch
+                            If panel IsNot Nothing Then
+                                panel.CommandControls.AddButton(be.ButtonDef, True)
+                            Else
+                                DiagnosticsLogger.Log("AddToUserInterface: Panel is Nothing for tab='" & be.TabId & "' panel='" & be.PanelId & "' - cannot add button '" & be.DisplayName & "'")
+                            End If
+                        Catch ex As Exception
+                            DiagnosticsLogger.Log("AddToUserInterface: Failed to add button '" & be.DisplayName & "' to panel '" & be.PanelId & "': " & ex.Message)
                         End Try
+                    Else
+                        DiagnosticsLogger.Log("AddToUserInterface: ButtonDef is Nothing for '" & be.DisplayName & "' (internal='" & be.InternalId & "')")
                     End If
-                Catch
+                Catch ex As Exception
+                    DiagnosticsLogger.Log("AddToUserInterface error for '" & be.DisplayName & "': " & ex.Message)
                     ' Could not find ribbon/tab - ignore (some Inventor ribbons may not be present in all environments)
                 End Try
             Next
@@ -144,7 +197,7 @@ Namespace $projectname$
             End Try
 
             If testDef IsNot Nothing Then
-                MsgBox("Error when loading the add-in: a command already exists with the same internal name. Change the internal name.", MsgBoxStyle.Exclamation + MsgBoxStyle.OkOnly, "Inventor Add-In")
+                DiagnosticsLogger.Log("Error when loading the add-in: a command already exists with the same internal name: '" & InternalName & "'")
                 Return Nothing
             End If
 
@@ -166,7 +219,8 @@ Namespace $projectname$
                             g2.DrawImage(bmp16, 0, 0, 16, 16)
                         End Using
                         iPicDisp16x16 = PictureDispConverter.ToIPictureDisp(bmp16NoAlpha)
-                    Catch
+                    Catch ex As Exception
+                        DiagnosticsLogger.Log("CreateButtonDefinition SIcon conversion error for '" & DisplayName & "': " & ex.Message)
                     End Try
                 End If
                 If BIcon IsNot Nothing Then
@@ -182,7 +236,8 @@ Namespace $projectname$
                             g2.DrawImage(bmp32, 0, 0, 32, 32)
                         End Using
                         iPicDisp32x32 = PictureDispConverter.ToIPictureDisp(bmp32NoAlpha)
-                    Catch
+                    Catch ex As Exception
+                        DiagnosticsLogger.Log("CreateButtonDefinition BIcon conversion error for '" & DisplayName & "': " & ex.Message)
                     End Try
                 End If
 
@@ -200,6 +255,7 @@ Namespace $projectname$
                                                                                       iPicDisp32x32)
                 Return btnDef
             Catch ex As Exception
+                DiagnosticsLogger.Log("CreateButtonDefinition error for '" & DisplayName & "' (internal='" & InternalName & "'): " & ex.Message)
                 Return Nothing
             End Try
         End Function
