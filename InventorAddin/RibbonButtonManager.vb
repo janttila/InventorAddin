@@ -135,7 +135,7 @@ Namespace $projectname$
                         Catch ex As Exception
                             ' Panel doesn't exist - create it
                             Try
-                                panel = tab.RibbonPanels.Add(be.PanelId, be.PanelName, _addInClientIdFunc())
+                                panel = tab.RibbonPanels.Add(be.PanelName, be.PanelId, _addInClientIdFunc())
                                 If panel IsNot Nothing Then
                                     _panelCache(cacheKey) = panel
                                 End If
@@ -143,7 +143,7 @@ Namespace $projectname$
                                 DiagnosticsLogger.Log("Failed to create panel '" & be.PanelId & "' on tab '" & be.TabId & "': " & ex2.Message)
                                 ' Fallback: try swapped parameter order in case API expects (Name, InternalName, ClientId)
                                 Try
-                                    panel = tab.RibbonPanels.Add(be.PanelName, be.PanelId, _addInClientIdFunc())
+                                    panel = tab.RibbonPanels.Add(be.PanelId, be.PanelName, _addInClientIdFunc())
                                     If panel IsNot Nothing Then
                                         _panelCache(cacheKey) = panel
                                         DiagnosticsLogger.Log("Fallback create succeeded using swapped params for panel '" & be.PanelId & "' on tab '" & be.TabId & "'")
