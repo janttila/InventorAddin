@@ -1,6 +1,8 @@
 Easy Inventor addin template for Inventor version 2025 and newer.
 For vb.net
 
+I have deleted the source, inventoraddin.zip is the tamplate file, enjoy!
+
 All ribbon buttons are stored in an json file.
 There is an editor to make the necessary code here ->> https://nexamon.com/editor.html
 
